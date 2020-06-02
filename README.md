@@ -55,6 +55,7 @@ Basically, you have a one file of configuration named _macro.config_, inside it,
 
 #### > You own:
 You can write your own configuration file. Think to change the file path on the _Makefile_. <br> **Pay attention :** if a line is _not_ set, like `VECTOR_FUNC_EMPTY=1`, the tester will not compile the function `.empty()`, this is the same for all function in containers.
+You can add comments using `#` on a line.
 
 #### > The macros:
 Here the macros to defined which test used:
@@ -67,7 +68,7 @@ Here the macros to defined which test used:
 		 <br>- `VECTOR_FUNC_SIZE` :  `.size()`.
 		 <br>- `VECTOR_FUNC_MAX_SIZE` :  `.max_size()`.
 		 <br>- `VECTOR_FUNC_CAPACITY` : `.capacity()`.
-		 <br>- `VECTOR_FUNC_PUSHBACK` : `.push_back()`, if the macro`VECTOR_FILL_CONSTRUCTOR` is set to `0`, a lot of test will use this to avec a filled vector.
+		 <br>- `VECTOR_FUNC_PUSHBACK` : `.push_back()`.
 		 <br>- `VECTOR_CONSTRUCTOR_ALL` :  if is set to `0`, the tester will not test constructors.
 		 <br>- `VECTOR_FILL_CONSTRUCTOR` : the fill constructor.
 		 <br>- `VECTOR_INSERT_ALL` : will not test differents insert functions.
@@ -77,8 +78,3 @@ Here the macros to defined which test used:
 		<br>- `VECTOR_ITERATOR_ASSIGN_CONSTRUCTOR` : the assignable-constructor of vectors.
 		<br>- `VECTOR_ITERATOR_OPE_PLUS_EQUAL` : `operator+=()`.
 		<br>- `VECTOR_ITERATOR_INCREMENTATION_RIGHT` : `operator++(int)`
- 
-
-
-You can add comments using `#` on a line.
-
