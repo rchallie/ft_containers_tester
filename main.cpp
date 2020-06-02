@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/19 22:20:09 by excalibur         #+#    #+#             */
-/*   Updated: 2020/05/30 00:52:04 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/06/02 00:44:53 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # include <iostream>
 
 # include "test.hpp"
-
-#if VECTOR_ALL == 1
-    # include "../vector.hpp"
-#endif
 
 void printTitle(void)
 {
@@ -35,7 +31,7 @@ int main()
 {
     printTitle();
 
-#if VECTOR_ALL == 1
+#if VECTOR_DEFAULT_CONSTRUCTOR == 1
     test_vector();
 #endif
 

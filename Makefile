@@ -6,7 +6,6 @@
 #                                  42.
 
 # TODO:
-# Add comment line to config file, removing # + after automatically
 # Remove -D and add automaticaly add all start of line
 
 #---- CONFIGURATION --------------------------------
