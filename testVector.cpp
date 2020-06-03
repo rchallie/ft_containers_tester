@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/23 18:38:33 by excalibur         #+#    #+#             */
-/*   Updated: 2020/06/03 19:49:48 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/06/03 21:56:41 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,7 @@ static void test_VectorCreation(void)
             std::vector<int> *stl_pointer_default_vector = new std::vector<int>;
             ft::vector<int> *ft_pointer_default_vector = new ft::vector<int>;
 
-            fs.open("vectors/pointer_default_constructor", std::fstream::in | std::fstream::out | std::fstream::trunc);
+            fs.open("vectors/default_constructor_pointer", std::fstream::in | std::fstream::out | std::fstream::trunc);
             std::cout << ((printVectorAttributes(fs, "Pointer to Default Constructor", *stl_pointer_default_vector, *ft_pointer_default_vector) == true) ? "[OK]" : "[NOP]");
             fs << "\nCode executed:\n";
             fs << "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n";
@@ -243,7 +243,7 @@ static void test_VectorCreation(void)
             std::vector<int> stl_fill_vector(0);
             ft::vector<int> ft_fill_vector(0);
 
-            fs.open("vectors/fill_constructor_empty", std::fstream::in | std::fstream::out | std::fstream::trunc);
+            fs.open("vectors/constructor_fill_empty", std::fstream::in | std::fstream::out | std::fstream::trunc);
             std::cout << ((printVectorAttributes(fs, "Fill Constructor Empty", stl_fill_vector, ft_fill_vector) == true) ? "[OK]" : "[NOP]");
             fs << "\nCode executed:\n";
             fs << "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n";
@@ -256,7 +256,7 @@ static void test_VectorCreation(void)
             std::vector<int> stl_fill_vector_sized(19);
             ft::vector<int> ft_fill_vector_sized(19);
 
-            fs.open("vectors/fill_constructor_sized", std::fstream::in | std::fstream::out | std::fstream::trunc);
+            fs.open("vectors/constructor_fill_sized", std::fstream::in | std::fstream::out | std::fstream::trunc);
             std::cout << ((printVectorAttributes(fs, "Fill Constructor Sized", stl_fill_vector_sized, ft_fill_vector_sized) == true) ? "[OK]" : "[NOP]");
             fs << "\nCode executed:\n";
             fs << "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n";
@@ -360,7 +360,7 @@ static void test_VectorCreation(void)
 
             #endif
 
-            #if VECTOR_DEFAULT_CONSTRUCTOR == 1 && VECTOR_FUNC_PUSHBACK == 1 && VECTOR_ITERATOR_ASSIGN_CONSTRUCTOR == 1 && (VECTOR_ITERATOR_OPE_PLUS_EQUAL == 1 || VECTOR_ITERATOR_INCREMENTATION_RIGHT == 1) && VECTOR_FUNC_BEGIN == 1
+            #if VECTOR_DEFAULT_CONSTRUCTOR == 1 && VECTOR_FUNC_PUSHBACK == 1 && VECTOR_ITERATOR_ALL == 1 && VECTOR_ITERATOR_ASSIGN_CONSTRUCTOR == 1 && (VECTOR_ITERATOR_OPE_PLUS_EQUAL == 1 || VECTOR_ITERATOR_INCREMENTATION_RIGHT == 1) && VECTOR_FUNC_BEGIN == 1
                 
                 fs.open("vectors/fill_insert_pushback", std::fstream::in | std::fstream::out | std::fstream::trunc);
                 
@@ -421,6 +421,60 @@ static void test_VectorCreation(void)
                     fs << "   stl_fill_insert_pushback_it++;";
                 #endif
                 fs << "stl_fill_insert_pushback.insert(stl_fill_insert_pushback_it, 4, 1);\n";
+                fs.close();
+            #endif
+
+            #if VECTOR_DEFAULT_CONSTRUCTOR == 1 && VECTOR_FUNC_BEGIN == 1
+                std::vector<int> stl_insert_fill_wrong;
+                ft::vector<int> ft_insert_fill_wrong;
+
+                fs.open("vectors/fill_insert_wrong", std::fstream::in | std::fstream::out | std::fstream::trunc);
+
+                fs << "══════════════════════════════════════════════════════════════\n";
+                fs << "Try-catch error : std::length_error :\n";
+                try
+                {
+                    stl_insert_fill_wrong.insert(stl_insert_fill_wrong.begin(), -42, 5);
+                }
+                catch (std::length_error & e)
+                {
+                    fs << "STL   : " << e.what() << "\n";    
+                }
+
+                try
+                {
+                    ft_insert_fill_wrong.insert(ft_insert_fill_wrong.begin(), -42, 5);
+                    fs << "FT [✘]: No exception catched.\n";
+                    std::cout << "[NOP]\n";
+                }
+                catch (std::length_error & e)
+                {
+                    fs << "FT [✔]: " << e.what() << "\n";
+                    std::cout << "[OK]\n";
+                }
+                fs << "══════════════════════════════════════════════════════════════\n";
+
+                fs << "\nCode executed:\n";
+                fs << "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n";
+                fs << "ft::vector<int> ft_insert_fill_wrong;\n";
+                fs << "try\n";
+                fs << "{\n";
+                fs << "    ft_insert_fill_wrong.insert(ft_insert_fill_wrong.begin(), -42, 5);\n";
+                fs << "}\n";
+                fs << "catch (std::length_error & e)\n";
+                fs << "{\n";
+                fs << "     Well Done !\n";
+                fs << "}\n";
+                fs << "\nCompared with:\n";
+                fs << "¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯\n";
+                fs << "std::vector<int> stl_insert_fill_wrong;\n";
+                fs << "try\n";
+                fs << "{\n";
+                fs << "    stl_insert_fill_wrong.insert(stl_insert_fill_wrong.begin(), -42, 5);\n";
+                fs << "catch (std::length_error & e)\n";
+                fs << "{\n";
+                fs << "     Well Done !\n";
+                fs << "}\n";
                 fs.close();
             #endif
             
