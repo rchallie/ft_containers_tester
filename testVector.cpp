@@ -6,7 +6,7 @@
 /*   By: excalibur <excalibur@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/23 18:38:33 by excalibur         #+#    #+#             */
-/*   Updated: 2020/06/02 23:21:44 by excalibur        ###   ########.fr       */
+/*   Updated: 2020/06/03 19:49:48 by excalibur        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,46 @@ std::string equal(const T& t1, const T& t2)
 }
 
 template <class T>
+std::string equalContent(
+#if VECTOR_CONST_ITERATOR_ALL == 1 && VECTOR_CONST_ITERATOR_ASSIGN_CONSTRUCTOR == 1
+    const std::vector<T> & stl_vector,
+    const ft::vector<T> & ft_vector
+#else
+    std::vector<T> & stl_vector,
+    ft::vector<T> & ft_vector
+#endif
+)
+{
+#if VECTOR_CONST_ITERATOR_ALL == 1 && VECTOR_CONST_ITERATOR_ASSIGN_CONSTRUCTOR == 1
+    {(void)ft_vector; (void)stl_vector;}
+#elif VECTOR_ITERATOR_ALL == 1 && VECTOR_ITERATOR_ASSIGN_CONSTRUCTOR == 1
+    typename ft::vector<T>::iterator ft_it;
+    typename std::vector<T>::iterator stl_it;
+    if (ft_vector.size() != stl_vector.size())
+        return ("✘");
+    stl_it = stl_vector.begin();
+    for(ft_it = ft_vector.begin(); ft_it != ft_vector.end(); ft_it++)
+    {
+        if (*ft_it != *stl_it)
+            return ("✘");
+        stl_it++;
+    }
+    return ("✔");
+#endif
+}
+
+template <class T>
 bool printVectorAttributes(
     std::fstream& fs,
     const std::string & after_test_msg, 
+#if VECTOR_CONST_ITERATOR_ALL == 1 && VECTOR_CONST_ITERATOR_ASSIGN_CONSTRUCTOR == 1
     const std::vector<T> & stl_vector,
-    const ft::vector<T> & ft_vector)
+    const ft::vector<T> & ft_vector
+#else
+    std::vector<T> & stl_vector,
+    ft::vector<T> & ft_vector
+#endif
+)
 {
     std::string stl_empty = ((stl_vector.empty() == 1) ? "true" : "false");
     size_t stl_size = stl_vector.size();
@@ -86,30 +121,44 @@ bool printVectorAttributes(
 
     #if VECTOR_FUNC_EMPTY == 1
         fs << "Empty    [" << equal(ft_empty, stl_empty) << "]: " << ft_empty  << std::endl;
+    #else
+        fs << "Empty    [ø]: Can't be compared (Need VECTOR_FUNC_EMPTY).\n";
     #endif
     
     #if VECTOR_FUNC_SIZE == 1
         fs << "Size     [" << equal(ft_size, stl_size) << "]: " << ft_size  << std::endl;
+    #else
+        fs << "Size     [ø]: Can't be compared (Need VECTOR_FUNC_SIZE).\n";
     #endif
     
     #if VECTOR_FUNC_MAX_SIZE == 1
         fs << "Max size [" << equal(ft_max_size, stl_max_size) << "]: " << ft_max_size  << std::endl;
+    #else
+        fs << "Max size [ø]: Can't be compared (Need VECTOR_FUNC_MAX_SIZE).\n";
     #endif
     
     #if VECTOR_FUNC_CAPACITY == 1
         fs << "Capacity [" << equal(ft_capacity, stl_capacity) << "]: " << ft_capacity  << std::endl;
+    #else
+        fs << "Capacity [ø]: Can't be compared (Need VECTOR_FUNC_CAPACITY).\n";
     #endif
 
     (void)ft_vector;
-    // ft::vector<T> to_noc = ft_vector;
-    // typename ft::vector<T>::iterator ft_it;
-    // for(ft_it = to_noc.begin(); ft_it != to_noc.end(); ft_it++)
-    // {
-    //     fs << *ft_it;
-    //     if (ft_it + 1 != to_noc.end())
-    //         fs << ", ";
-    // }
-    // fs << "]\n";
+    #if VECTOR_CONST_ITERATOR_ALL == 1 && VECTOR_CONST_ITERATOR_ASSIGN_CONSTRUCTOR == 1
+        fs << "Content  [ø]: Can't be compared (WIP)\n";
+    #elif VECTOR_ITERATOR_ALL == 1 && VECTOR_ITERATOR_ASSIGN_CONSTRUCTOR == 1
+        fs << "Content  [" << equalContent(stl_vector, ft_vector) << "]: [";
+        typename ft::vector<T>::iterator ft_it;
+        for(ft_it = ft_vector.begin(); ft_it != ft_vector.end(); ft_it++)
+        {
+            fs << *ft_it;
+            if (ft_it + 1 != ft_vector.end())
+                fs << ", ";
+        }
+        fs << "]\n";
+    #else
+        fs << "Content  [ø]: Can't be compared (WIP)\n";
+    #endif
 
     fs << "══════════════════════════════════════════════════════════════\n";
 
@@ -261,9 +310,7 @@ static void test_VectorCreation(void)
                 
                 std::vector<int> stl_fill_insert_filled(15, 42);
                 ft::vector<int> ft_fill_insert_filled(15,42);
-                
-                std::cout << ((printVectorAttributes(fs, "Insert (fill) from filled", stl_fill_insert_filled, ft_fill_insert_filled) == true) ? "[OK]" : "[NOP]");
-                
+                                
                 std::vector<int>::iterator stl_fill_insert_filled_it = stl_fill_insert_filled.begin();
                 ft::vector<int>::iterator ft_fill_insert_filled_it = ft_fill_insert_filled.begin();
 
