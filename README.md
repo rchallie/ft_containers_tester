@@ -35,6 +35,45 @@ Start the tester :
 When you have started the tester you will see if your function do the same things the the STL.
 You can find _output_ of all tests in the folder equivalent to the container name. 
 
+## Output files:
+The tester will output perfomed test in terms of the container tested. The output form can change in function of tests.
+You can find this in tests output :
+> Here an output test of `.insert()` (fill) function using pushback to have a filled vector container: _An attribute output_
+
+    ══════════════════════════════════════════════════════════════
+    Vectors attributes : After test : Insert (fill) from pushbacked
+    STL :
+    Empty       : false
+    Size        : 19
+    Max size    : 4611686018427387903
+    Capacity    : 30
+    Content     : [42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 42, 1, 1, 1, 1, 42, 42, 42]
+	 
+	FT :
+	Empty    [ø]: Can't be compared (Need VECTOR_FUNC_EMPTY).
+	Size     [✔]: 19
+	Max size [✔]: 4611686018427387903
+	Capacity [✘]: 32
+	Content  [ø]: Can't be compared (WIP)
+	══════════════════════════════════════════════════════════════
+- The first part is the output of the STL containers.
+- The secound part is FT containers.
+		- `[ø]` : Can't be performed.
+		- `[✔]` :  In agreement with the STL container.
+		- `[✘]` :  Improper.
+> ⚠️ Some fonctionnality can be in developpement (WIP).
+
+    Code executed:
+    ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+    ft::vector<int> ft_fill_insert_pushback;
+    for (int n = 0; n < 15; n++)
+	    ft_fill_insert_pushback.push_back(42);
+	ft::vector<int>::iterator ft_fill_insert_pushback_it = ft_fill_insert_pushback.begin();
+	ft_fill_insert_pushback_it += 12;
+	ft_fill_insert_pushback.insert(ft_fill_insert_pushback_it, 4, 1);
+
+You have the details about how the code is tested.
+
 ## Configuration:
 ### Mount configuration:
 In _Makefile_ :
@@ -68,7 +107,7 @@ Here the macros to defined which test used:
 		 <br>- `VECTOR_FUNC_SIZE` :  `.size()`.
 		 <br>- `VECTOR_FUNC_MAX_SIZE` :  `.max_size()`.
 		 <br>- `VECTOR_FUNC_CAPACITY` : `.capacity()`.
-		 <br>- `VECTOR_FUNC_PUSHBACK` : `.push_back()`.
+		 <br>- `VECTOR_FUNC_PUSHBACK` : `.push_back()`, if the macro`VECTOR_FILL_CONSTRUCTOR` is set to `0`, a lot of test will use this to avec a filled vector.
 		 <br>- `VECTOR_CONSTRUCTOR_ALL` :  if is set to `0`, the tester will not test constructors.
 		 <br>- `VECTOR_FILL_CONSTRUCTOR` : the fill constructor.
 		 <br>- `VECTOR_INSERT_ALL` : will not test differents insert functions.
